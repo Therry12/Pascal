@@ -14,30 +14,30 @@ begin
     { Вывод верхней части алмаза }
     for k := 1 to n + 1 do
     begin {///}
-	for i := 1 to n + 1 - k do
-	    write(' ');
-        write('*');
-	if k > 1 then
+	    for i := 1 to n + 1 - k do
+	        write(' ');
+            write('*');
+	    if k > 1 then
 	begin
 	    for i := 1 to 2*k - 3 do
 		write(' ');
  	    write('*')
 	end;
-	writeln;
+	    writeln;
     end; {///}
 
     { Вывод нижней части алмаза }
     for k := n downto 1 do
     begin {///}
-	for i := 1 to n + 1 - k do
-	    write(' ');
-	write('*');
-        if k > 1 then
-	begin
-	    for i := 1 to k*2 - 3 do
+	    for i := 1 to n + 1 - k do
 	        write(' ');
-	    write('*')
-	end;
+	    write('*');
+        if k > 1 then
+	    begin
+	        for i := 1 to k*2 - 3 do
+	            write(' ');
+	        write('*')
+	    end;
         writeln;
     end; {///}
 end.
