@@ -1,43 +1,39 @@
 program write_diamond;
 
+procedure write_chars (ch: char; count: integer); 
 var
-n, k, i, h: integer;
+    i: integer;
+begin
+    for i := 1 to count do
+        write(ch);        
+end;
+
+procedure write_line_of_diamond (k, n: integer);
+begin
+    write_chars(' ',n + 1 - k);
+    write('*');
+
+    if k > 1 then
+    begin
+        write_chars(' ', 2 * k - 3);
+        write('*')
+    end;
+    writeln;
+end;
+
+var
+    n, k, h: integer;
 
 begin
-    { Ввод нечётного числа }
     repeat 
 	write('Enter odd number: ');
         read(h)
     until (h > 0) and (h mod 2 = 1);
     n := h div 2;
 
-    { Вывод верхней части алмаза }
     for k := 1 to n + 1 do
-    begin {///}
-	    for i := 1 to n + 1 - k do
-	        write(' ');
-            write('*');
-	    if k > 1 then
-	begin
-	    for i := 1 to 2*k - 3 do
-		write(' ');
- 	    write('*')
-	end;
-	    writeln;
-    end; {///}
+        write_line_of_diamond(k, n);
 
-    { Вывод нижней части алмаза }
     for k := n downto 1 do
-    begin {///}
-	    for i := 1 to n + 1 - k do
-	        write(' ');
-	    write('*');
-        if k > 1 then
-	    begin
-	        for i := 1 to k*2 - 3 do
-	            write(' ');
-	        write('*')
-	    end;
-        writeln;
-    end; {///}
+        write_line_of_diamond(k, n);
 end.

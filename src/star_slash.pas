@@ -7,7 +7,9 @@ begin
     for m := 1 to 24 do
     begin
         for n := 1 to m - 1 do
-	    write(' ');
+	begin
+	    write(' ')
+	end;
 	writeln('*') 
     end;
 end.
