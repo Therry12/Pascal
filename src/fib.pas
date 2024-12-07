@@ -7,9 +7,11 @@ var
 
 begin
     if num <= 0 then
-        fibonacci := 1
-    else
     begin
+        fibonacci := 0;
+        exit
+    end;
+
     r := 0;
     q := 1;
     for i := 2 to num do
@@ -19,13 +21,13 @@ begin
         q := p + r;
     end;
     fibonacci := q;
-    end
 end;
 
 var
-    res: integer;
+    res, num: integer;
 
 begin
-    res := fibonacci(10);
-    writeln('Fib 5 is ', res);
+    num := 5;
+    res := fibonacci(num);
+    writeln('Fib ', num, ' is ', res);
 end.
