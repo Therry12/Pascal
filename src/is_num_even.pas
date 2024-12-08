@@ -9,5 +9,4 @@ begin
     
     if input_num mod 2 = 0 then
 	writeln('Num ', input_num ,' is even')
-
 end.
