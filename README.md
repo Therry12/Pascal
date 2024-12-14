@@ -1,1 +1,1 @@
-Sorry for code style, I write this using vi text editor
+This  repository for my small projects on pascal.:
