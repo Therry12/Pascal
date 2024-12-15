@@ -1,6 +1,8 @@
 program print_Ntimes;
 
-const message = 'Hello, World!'; count = 10;
+const
+    message = 'Hello, World!';
+    count = 10;
 var
     i: integer;
 
