@@ -8,9 +8,9 @@ begin
     print := false;
     know := false;
     while not eof do
-    begin  
+    begin
         read(c);
-        if c = #10 then 
+        if c = #10 then
         begin
             if know and print then
                 writeln;
@@ -20,7 +20,7 @@ begin
         begin
             if not know then
             begin
-                print := (c <> ' ') and  (c <> #9);
+                print := (c <> ' ') and (c <> #9);
                 know := true
             end
         end;

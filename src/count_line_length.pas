@@ -11,7 +11,7 @@ begin
         read(c);
         if c = #10 then
         begin
-            writeln(count); 
+            writeln(count);
             count := 0
         end
         else
