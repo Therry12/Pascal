@@ -5,6 +5,7 @@ type
 
 var
     x: real_100;
+    y: array [1..100] of real; {Анонимное обьявление массива}
 
 begin
     x[0] := 1;
