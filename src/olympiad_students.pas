@@ -6,7 +6,6 @@ const
 
 type
     Counter_Array = array [1..Max_Schools] of integer;
-
 var
     Counters: Counter_Array;
     i, c, n: integer;
