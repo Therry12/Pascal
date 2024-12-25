@@ -91,11 +91,13 @@ begin
       end;
     end;
     Right_Bottom_Corner:
+    begin
       for i := 1 to ARR_SIZE do
       begin
-        GotoXY(ScreenWidth - msg_size, ScreenHeight - i);
+        GotoXY(ScreenWidth - msg_size, ScreenHeight);
         write(Keybindings[i]);
       end;
+    end;
   end;
 end;
 
