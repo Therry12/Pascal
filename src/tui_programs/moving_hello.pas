@@ -6,12 +6,13 @@ const
   Message = 'Hello, World!';
 
   Keybinding_Message_1 = '1. You can move msg using arrows on your keyboard.'#10;
-  Keybinding_Message_2 = '2. For exit type any key on your keyboard.'#10;
+  Keybinding_Message_2 = '2. For exit type q on your keyboard.'#10;
+  Keybinding_Message_3 = '3. You can hide this message using H key'#10;
 
-  ARR_SIZE = 2;
+  ARR_SIZE = 3;
 
 type
-  KEYBINDINGS_LOCATION = (Left_Upper_Corner, Left_Bottom_Corner,
+  HELP_MESSAGES_LOCATION = (Left_Upper_Corner, Left_Bottom_Corner,
     Right_Upper_Corner, Right_Bottom_Corner);
     Keybindings_Messages = array [1..ARR_SIZE] of string;
 
@@ -59,7 +60,7 @@ end;
 
 procedure Calculate_Greatest_Message_Size(var greatest_size: integer);
 var
-  Keybindings: Keybindings_Messages = (Keybinding_Message_1, Keybinding_Message_2);
+  Keybindings: Keybindings_Messages = (Keybinding_Message_1, Keybinding_Message_2, Keybinding_Message_3);
   i: integer;
 begin
   for i := 1 to ARR_SIZE do
@@ -72,63 +73,126 @@ begin
   end;
 end;
 
-procedure Define_Keybindings_Location(location: KEYBINDINGS_LOCATION; msg_size: integer);
+procedure Write_Help_Message(msg_size: integer; location: HELP_MESSAGES_LOCATION); { Bad procedure, but idk how to write this normal }
 var
-  Keybindings: Keybindings_Messages = (Keybinding_Message_1, Keybinding_Message_2);
+  Keybindings: Keybindings_Messages = (Keybinding_Message_1, Keybinding_Message_2, Keybinding_Message_3);
   i: integer;
 begin
-  case location of
-    Left_Upper_Corner:
-      GotoXY(1,1);
-    Left_Bottom_Corner:
-      GotoXY(1, ScreenHeight);
-    Right_Upper_Corner:
+  if location = Right_Upper_Corner then
+  begin
+    for i := 1 to ARR_SIZE do
     begin
-      for i := 1 to ARR_SIZE do
-      begin
-        GotoXY(ScreenWidth - msg_size, i);
-        write(Keybindings[i]);
-      end;
+      GotoXY(ScreenWidth - msg_size, i);
+      write(Keybindings[i]);
     end;
-    Right_Bottom_Corner:
+  end
+  else if location = Right_Bottom_Corner then
+  begin
+    for i := 1 to ARR_SIZE do
     begin
-      for i := 1 to ARR_SIZE do
-      begin
-        GotoXY(ScreenWidth - msg_size, ScreenHeight);
-        write(Keybindings[i]);
-      end;
+      GotoXY(ScreenWidth - msg_size, ScreenHeight);
+      write(Keybindings[i]);
+    end;
+  end
+  else
+  begin
+    for i := 1 to ARR_SIZE do
+    begin
+      write(Keybindings[i]);
     end;
   end;
 end;
 
+procedure Define_Keybindings_Location(msg_size: integer; location: HELP_MESSAGES_LOCATION);
+begin
+  case location of
+    Left_Upper_Corner:
+    begin
+      GotoXY(1,1);
+      Write_Help_Message(msg_size, location);
+    end;
+    Left_Bottom_Corner:
+    begin
+      GotoXY(1, ScreenHeight);
+      Write_Help_Message(msg_size, location);
+    end;
+    Right_Upper_Corner:
+      Write_Help_Message(msg_size, location);
+    Right_Bottom_Corner:
+      Write_Help_Message(msg_size, location);
+  end;
+end;
+
+procedure Hide_Help_Message(greatest_size: integer; location: HELP_MESSAGES_LOCATION);
+var
+  i, j: integer;
+begin
+  case location of
+    Left_Upper_Corner:
+    begin
+      GotoXY(1,1); { It's errase first line }
+      write(' ');
+    end;
+    Left_Bottom_Corner:
+    begin
+      for i := 1 to ARR_SIZE do
+      begin
+        GotoXY(1, ScreenHeight - i);
+        for j := 1 to greatest_size do
+          write(' ');
+      end;
+    end;
+  end;
+  GotoXY(1,1);
+end;
 
 var
-  Cur_X, Cur_Y, c_size: integer;
+  _Help_Messages_Location: HELP_MESSAGES_LOCATION;
+  Cur_X, Cur_Y, pixel_size: integer;
   c, msg_size: integer;
+  Is_Help_Messages_Hidden: boolean;
 
 begin
-  c_size := 2;
+  pixel_size := 2;
+  _Help_Messages_Location := Left_Bottom_Corner;
+  Is_Help_Messages_Hidden := False; 
+
   clrscr;
   Calculate_Greatest_Message_Size(msg_size);
-  Define_Keybindings_Location(Right_Bottom_Corner, msg_size);
+  Define_Keybindings_Location(msg_size, _Help_Messages_Location);
   Cur_X := (ScreenWidth - length(Message)) div 2;
   Cur_Y := ScreenHeight div 2;
   Show_Message(Cur_X, Cur_Y, Message);
   while true do
   begin
     Get_Key(c);
-    if c > 0 then
+    if c = 113 then { Q key }
       break;
     case c of 
+    { Arrows }
       -75:
-        Move_Message(Cur_X, Cur_Y, Message, -c_size, 0);
+        Move_Message(Cur_X, Cur_Y, Message, -pixel_size, 0);
       -77:
-        Move_Message(Cur_X, Cur_Y, Message, c_size, 0);
+        Move_Message(Cur_X, Cur_Y, Message, pixel_size, 0);
       -72:
-        Move_Message(Cur_X, Cur_Y, Message, 0, -c_size);
+        Move_Message(Cur_X, Cur_Y, Message, 0, -pixel_size);
       -80:
-        Move_Message(Cur_X, Cur_Y, Message, 0, c_size);
-      end
+        Move_Message(Cur_X, Cur_Y, Message, 0, pixel_size);
+      { Help keys }
+      104: { Toggle hide and open help messages}
+      begin
+        if Is_Help_Messages_Hidden = False then
+        begin
+          Hide_Help_Message(msg_size, _Help_Messages_Location);
+          Is_Help_Messages_Hidden := True;
+        end
+        else
+        begin
+          Define_Keybindings_Location(msg_size, _Help_Messages_Location);
+          Is_Help_Messages_Hidden := False;
+        end;
+      end;
+    end;
   end;
   clrscr
 end.
