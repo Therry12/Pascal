@@ -5,9 +5,9 @@ uses crt;
 const
   Message = 'Hello, World!';
 
-  Keybinding_Message_1 = '1. You can move msg using arrows on your keyboard.'#10;
-  Keybinding_Message_2 = '2. For exit type q on your keyboard.'#10;
-  Keybinding_Message_3 = '3. You can hide this message using H key'#10;
+  Keybinding_Message_1 = '1. You can move msg using arrows on your keyboard.';
+  Keybinding_Message_2 = '2. For exit type q on your keyboard.';
+  Keybinding_Message_3 = '3. You can hide this message using H key';
 
   ARR_SIZE = 3;
 
@@ -52,10 +52,13 @@ end;
 
 procedure Move_Message(var x, y: integer; msg: string; dx, dy: integer);
 begin
-  Hide_Message(x, y, msg);
-  x := x + dx;
-  y := y + dy;
-  Show_Message(x, y, msg)
+  if ((x + dx) < ScreenWidth) then
+  begin
+    Hide_Message(x, y, msg);
+    x := x + dx;
+    y := y + dy;
+    Show_Message(x, y, msg)
+  end;
 end;
 
 procedure Calculate_Greatest_Message_Size(var greatest_size: integer);
@@ -73,7 +76,7 @@ begin
   end;
 end;
 
-procedure Write_Help_Message(msg_size: integer; location: HELP_MESSAGES_LOCATION); { Bad procedure, but idk how to write this normal }
+procedure Write_Help_Message(msg_size: integer; location: HELP_MESSAGES_LOCATION); { Bad procedure, but idk how to write this fine }
 var
   Keybindings: Keybindings_Messages = (Keybinding_Message_1, Keybinding_Message_2, Keybinding_Message_3);
   i: integer;
@@ -83,7 +86,7 @@ begin
     for i := 1 to ARR_SIZE do
     begin
       GotoXY(ScreenWidth - msg_size, i);
-      write(Keybindings[i]);
+      writeln(Keybindings[i]);
     end;
   end
   else if location = Right_Bottom_Corner then
@@ -91,15 +94,13 @@ begin
     for i := 1 to ARR_SIZE do
     begin
       GotoXY(ScreenWidth - msg_size, ScreenHeight);
-      write(Keybindings[i]);
+      writeln(Keybindings[i]);
     end;
   end
   else
   begin
     for i := 1 to ARR_SIZE do
-    begin
-      write(Keybindings[i]);
-    end;
+        writeln(Keybindings[i]);
   end;
 end;
 
@@ -110,16 +111,24 @@ begin
     begin
       GotoXY(1,1);
       Write_Help_Message(msg_size, location);
+      GotoXY(1,1);
     end;
     Left_Bottom_Corner:
     begin
       GotoXY(1, ScreenHeight);
       Write_Help_Message(msg_size, location);
+      GotoXY(1,1);
     end;
     Right_Upper_Corner:
+    begin
       Write_Help_Message(msg_size, location);
+      GotoXY(1,1);
+    end;
     Right_Bottom_Corner:
+    begin
       Write_Help_Message(msg_size, location);
+      GotoXY(1,1);
+    end;
   end;
 end;
 
@@ -130,7 +139,7 @@ begin
   case location of
     Left_Upper_Corner:
     begin
-      GotoXY(1,1); { It's errase first line }
+      GotoXY(1,1);
       write(' ');
     end;
     Left_Bottom_Corner:
@@ -148,12 +157,11 @@ end;
 
 var
   _Help_Messages_Location: HELP_MESSAGES_LOCATION;
-  Cur_X, Cur_Y, pixel_size: integer;
-  c, msg_size: integer;
+  Cur_X, Cur_Y, pixel_size, c, msg_size: integer;
   Is_Help_Messages_Hidden: boolean;
 
 begin
-  pixel_size := 2;
+  pixel_size := 1;
   _Help_Messages_Location := Left_Bottom_Corner;
   Is_Help_Messages_Hidden := False; 
 
@@ -179,17 +187,17 @@ begin
       -80:
         Move_Message(Cur_X, Cur_Y, Message, 0, pixel_size);
       { Help keys }
-      104: { Toggle hide and open help messages}
+      104: { Toggle hide and open help messages pressing 'h' key}
       begin
         if Is_Help_Messages_Hidden = False then
         begin
-          Hide_Help_Message(msg_size, _Help_Messages_Location);
           Is_Help_Messages_Hidden := True;
+          Hide_Help_Message(msg_size, _Help_Messages_Location);
         end
         else
         begin
-          Define_Keybindings_Location(msg_size, _Help_Messages_Location);
           Is_Help_Messages_Hidden := False;
+          Define_Keybindings_Location(msg_size, _Help_Messages_Location);
         end;
       end;
     end;
