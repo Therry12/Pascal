@@ -22,10 +22,10 @@ begin
 end;
 
 type
-  Directions = (LEFT, RIGHT, BOTTOM, UP);
   star = record
     CurX, CurY, dx, dy: integer;
   end;
+
 procedure CenterText(var x, y: integer; msg: string);
 var
   msg_size: integer;
